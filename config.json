@@ -1,0 +1,13 @@
+{
+  "hero": ["uploads/hero1.mp4", "uploads/hero2.mp4", "uploads/hero3.mp4"],
+  "featured": {
+    "richard": "img/richard.jpg",
+    "patek": "img/pat.jpg",
+    "rolex": "img/rolex.jpg"
+  },
+  "subpages": {
+    "richard": ["img/richard.jpg", "img/richard.jpg", "img/richard.jpg", "img/richard.jpg", "img/richard.jpg", "img/richard.jpg"],
+    "patek": ["img/pat.jpg", "img/pat.jpg", "img/pat.jpg", "img/pat.jpg", "img/pat.jpg", "img/pat.jpg"],
+    "rolex": ["img/rolex.jpg", "img/rolex.jpg", "img/rolex.jpg", "img/rolex.jpg", "img/rolex.jpg", "img/rolex.jpg"]
+  }
+}

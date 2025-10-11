@@ -1,0 +1,331 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f0;
+    color: #333;
+    line-height: 1.6;
+    cursor: default; /* Default cursor */
+}
+
+a:hover, button:hover {
+    cursor: pointer; /* Custom cursor on hover (gold hand) */
+}
+
+header {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo h2 {
+    font-family: 'Playfair Display', serif;
+    color: #333;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 400;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #d4af37;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #333;
+    margin: 3px 0;
+    transition: 0.2s;
+}
+
+.hero, .sub-hero {
+    margin-top: 80px;
+    position: relative;
+    height: 80vh;
+    overflow: hidden;
+}
+
+.hero .slide video, .sub-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-carousel {
+    position: relative;
+    height: 100%;
+}
+
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgb(31, 26, 1);
+    background: rgba(234, 235, 184, 0.5);
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    display: inline-block;
+    background: #d4af37;
+    color: white;
+    padding: 0.8rem 2rem;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.2s ease, transform 0.2s ease;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background: #b8942f;
+    transform: scale(1.05); /* Motion effect */
+}
+
+.carousel-prev, .carousel-next, .f-carousel-prev, .f-carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: background 0.3s ease;
+}
+
+.carousel-prev:hover, .carousel-next:hover, .f-carousel-prev:hover, .f-carousel-next:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-prev { left: 1rem; }
+.carousel-next { right: 1rem; }
+.f-carousel-prev { left: 1rem; }
+.f-carousel-next { right: 1rem; }
+
+.carousel-dots {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.dot.active {
+    background: white;
+}
+
+.featured, .sub-products {
+    padding: 5rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: #333;
+}
+
+.featured-carousel {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    height: 500px;
+    margin-bottom: 2rem;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.product-card, .product-item, .category-item {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.product-card:hover, .product-item:hover, .category-item:hover {
+    transform: scale(1.05) translateY(-10px); /* Hover motion */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.product-card img, .product-item img, .category-item img {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+
+.product-card:hover img, .product-item:hover img, .category-item:hover img {
+    transform: scale(1.1);
+}
+
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+    padding: 2rem 1rem 1rem;
+    transform: translateY(100%);
+    transition: transform 0.2s ease;
+}
+
+.product-card:hover .card-overlay {
+    transform: translateY(0);
+}
+
+.slide-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.categories {
+    padding: 5rem 5%;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.category-grid, .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category-item h3, .product-item h3 {
+    font-family: 'Playfair Display', serif;
+    margin: 1rem 0;
+    color: #333;
+}
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+.whatsapp-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+    z-index: 1000;
+}
+
+.whatsapp-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    .hamburger {
+        display: flex;
+    }
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+    .featured-carousel {
+        height: 300px;
+    }
+    .product-card {
+        width: 300px;
+    }
+    .f-carousel-prev, .f-carousel-next {
+        left: 0;
+        right: 0;
+    }
+}

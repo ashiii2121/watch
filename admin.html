@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Upload Files</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f0; }
+        form { margin-bottom: 20px; }
+        label { display: block; margin: 10px 0; }
+        button { padding: 10px; background: #d4af37; color: white; border: none; cursor: pointer; }
+        #message { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Admin: Upload Files</h1>
+    <p>Upload videos for hero slides (MP4/WebM) and images for featured/subpage sections. Updates apply instantly.</p>
+
+    <h2>Hero Videos (Index Page)</h2>
+    <form id="hero-form" enctype="multipart/form-data">
+        <label>Slide Index (0-2): <input type="number" name="index" min="0" max="2" required></label>
+        <input type="hidden" name="section" value="hero">
+        <input type="file" name="file" accept="video/mp4,video/webm" required>
+        <button type="submit">Upload Video</button>
+    </form>
+
+    <h2>Featured Images (Index Page)</h2>
+    <form id="featured-form" enctype="multipart/form-data">
+        <label>Brand: 
+            <select name="subpage" required>
+                <option value="richard">Richard Mille</option>
+                <option value="patek">Patek Philippe</option>
+                <option value="rolex">Rolex</option>
+            </select>
+        </label>
+        <input type="hidden" name="section" value="featured">
+        <input type="file" name="file" accept="image/*" required>
+        <button type="submit">Upload Image</button>
+    </form>
+
+    <h2>Subpage Product Images</h2>
+    <form id="subpage-form" enctype="multipart/form-data">
+        <label>Brand: 
+            <select name="subpage" required>
+                <option value="richard">Richard Mille</option>
+                <option value="patek">Patek Philippe</option>
+                <option value="rolex">Rolex</option>
+            </select>
+        </label>
+        <label>Product Index (0-5): <input type="number" name="index" min="0" max="5" required></label>
+        <input type="hidden" name="section" value="subpages">
+        <input type="file" name="file" accept="image/*" required>
+        <button type="submit">Upload Image</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                try {
+                    const response = await fetch('/api/upload', { method: 'POST', body: formData });
+                    const result = await response.json();
+                    document.getElementById('message').innerText = result.message || 'Success! Refresh site to see changes.';
+                } catch (error) {
+                    document.getElementById('message').innerText = 'Error: ' + error.message;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
