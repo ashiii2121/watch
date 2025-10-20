@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Products</title>
+</head>
+<body>
+    <h1>Product Debug</h1>
+    <div id="debug-info"></div>
+    <div id="products-container"></div>
+
+    <script>
+        async function debugProducts() {
+            const debugInfo = document.getElementById('debug-info');
+            const container = document.getElementById('products-container');
+            
+            try {
+                debugInfo.innerHTML = '<p>Fetching products...</p>';
+                
+                const response = await fetch('/api/products');
+                const products = await response.json();
+                
+                debugInfo.innerHTML = `<p>Products fetched successfully. Count: ${products.length}</p>`;
+                console.log('Products:', products);
+                
+                // Display products
+                container.innerHTML = '';
+                products.forEach(product => {
+                    const productDiv = document.createElement('div');
+                    productDiv.innerHTML = `
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <p>Price: $${product.price}</p>
+                        <img src="${product.image}" style="width: 200px; height: auto;" onerror="this.onerror=null;this.src='https://placehold.co/300x200/1a1a1a/ffffff?text=Product+Image';">
+                        <hr>
+                    `;
+                    container.appendChild(productDiv);
+                });
+            } catch (error) {
+                debugInfo.innerHTML = `<p>Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        }
+        
+        debugProducts();
+    </script>
+</body>
+</body>
+</html>

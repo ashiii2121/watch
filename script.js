@@ -20,15 +20,31 @@ async function loadConfig() {
     featuredImgs[0].src = config.featured.richard || 'img/richard.jpg';
     featuredImgs[1].src = config.featured.patek || 'img/pat.jpg';
     featuredImgs[2].src = config.featured.rolex || 'img/rolex.jpg';
+
+    // Add error handling for featured images
+    featuredImgs.forEach(img => {
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = 'https://placehold.co/600x400/1a1a1a/ffffff?text=Watch+Image';
+      };
+    });
   }
 
   // Categories images (index only, repeated)
-  if (document.querySelector('.category-grid')) {
-    const categoryImgs = document.querySelectorAll('.category-item img');
+  // Only update images in the static categories section, not in the dynamic products section
+  if (document.querySelector('#categories .category-grid')) {
+    const categorySection = document.querySelector('#categories .category-grid');
+    const categoryImgs = categorySection.querySelectorAll('.category-item img');
     categoryImgs.forEach((img, i) => {
       if (i % 3 === 0) img.src = config.featured.richard || 'img/richard.jpg';
       else if (i % 3 === 1) img.src = config.featured.patek || 'img/pat.jpg';
       else img.src = config.featured.rolex || 'img/rolex.jpg';
+
+      // Add error handling for category images
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = 'https://placehold.co/300x200/1a1a1a/ffffff?text=Category+Image';
+      };
     });
   }
 
@@ -40,6 +56,12 @@ async function loadConfig() {
       if (config.subpages[brand] && config.subpages[brand][i]) {
         img.src = config.subpages[brand][i];
       }
+
+      // Add error handling for product images
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = 'https://placehold.co/300x200/1a1a1a/ffffff?text=Product+Image';
+      };
     });
   }
 }

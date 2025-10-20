@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Image Loading</title>
+  </head>
+  <body>
+    <h1>Image Loading Test</h1>
+    <div id="test-container"></div>
+
+    <script>
+      async function testImages() {
+        try {
+          const response = await fetch("/api/products");
+          const products = await response.json();
+
+          const container = document.getElementById("test-container");
+
+          products.forEach((product) => {
+            const div = document.createElement("div");
+            div.style.marginBottom = "20px";
+            div.style.padding = "10px";
+            div.style.border = "1px solid #ccc";
+
+            div.innerHTML = `
+                        <h3>${product.name}</h3>
+                        <p>Image path: ${product.image}</p>
+                        <p>Status: <span id="status-${product.id}">Checking...</span></p>
+                        <img src="${product.image}" style="max-width: 300px; height: auto;" onerror="document.getElementById('status-${product.id}').textContent='Failed to load'; document.getElementById('status-${product.id}').style.color='red';" onload="document.getElementById('status-${product.id}').textContent='Loaded successfully'; document.getElementById('status-${product.id}').style.color='green';">
+                    `;
+
+            container.appendChild(div);
+          });
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById("test-container").innerHTML =
+            "<p>Error loading products: " + error.message + "</p>";
+        }
+      }
+
+      testImages();
+    </script>
+  </body>
+</html>

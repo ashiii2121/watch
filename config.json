@@ -6,8 +6,29 @@
     "rolex": "img/rolex.jpg"
   },
   "subpages": {
-    "richard": ["img/richard.jpg", "img/richard.jpg", "img/richard.jpg", "img/richard.jpg", "img/richard.jpg", "img/richard.jpg"],
-    "patek": ["img/pat.jpg", "img/pat.jpg", "img/pat.jpg", "img/pat.jpg", "img/pat.jpg", "img/pat.jpg"],
-    "rolex": ["img/rolex.jpg", "img/rolex.jpg", "img/rolex.jpg", "img/rolex.jpg", "img/rolex.jpg", "img/rolex.jpg"]
+    "richard": [
+      "img/richard.jpg",
+      "img/richard.jpg",
+      "img/richard.jpg",
+      "img/richard.jpg",
+      "img/richard.jpg",
+      "img/richard.jpg"
+    ],
+    "patek": [
+      "img/pat.jpg",
+      "img/pat.jpg",
+      "img/pat.jpg",
+      "img/pat.jpg",
+      "img/pat.jpg",
+      "img/pat.jpg"
+    ],
+    "rolex": [
+      "img/rolex.jpg",
+      "img/rolex.jpg",
+      "img/rolex.jpg",
+      "img/rolex.jpg",
+      "img/rolex.jpg",
+      "img/rolex.jpg"
+    ]
   }
 }
