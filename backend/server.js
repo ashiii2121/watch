@@ -10,8 +10,6 @@ const PORT = 3000;
 // Serve static files FIRST, before any middleware
 // Updated to serve static files from the frontend directory
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
-// Serve uploads directory
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 // Serve img directory
 app.use('/img', express.static(path.join(__dirname, '..', 'img')));
 
@@ -43,19 +41,8 @@ if (!fs.existsSync(productsPath)) {
 }
 
 // Configure multer for different file types
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    if (file.mimetype.startsWith('video/')) {
-      cb(null, 'uploads/');
-    } else if (file.mimetype.startsWith('image/')) {
-      cb(null, 'uploads/');
-    } else {
-      cb(null, 'uploads/');
-    }
-  },
-  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
-});
-
+// For Vercel deployment, we'll store files in memory instead of disk
+const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
@@ -83,9 +70,9 @@ app.get('/api/config', (req, res) => {
 });
 
 // Updated upload endpoint to handle different sections
+// For Vercel deployment, we'll return a data URL instead of file path
 app.post('/api/upload', authenticateAdmin, upload.single('file'), (req, res) => {
   const { section, subpage, index } = req.body;
-  const newPath = `uploads/${req.file.filename}`;
   const config = fs.readJsonSync(configPath);
 
   // Validate file type based on section
@@ -95,17 +82,21 @@ app.post('/api/upload', authenticateAdmin, upload.single('file'), (req, res) => 
     return res.status(400).json({ success: false, message: 'Non-hero sections only accept image files' });
   }
 
+  // Convert file to base64 data URL for client-side storage
+  const fileData = req.file.buffer.toString('base64');
+  const dataUrl = `data:${req.file.mimetype};base64,${fileData}`;
+
   if (section === 'hero') {
-    // For hero section, we store the video path
+    // For hero section, we store the video data URL
     if (!config.hero) {
       config.hero = [];
     }
-    config.hero[parseInt(index)] = newPath;
+    config.hero[parseInt(index)] = dataUrl;
   } else if (section === 'featured') {
     if (!config.featured) {
       config.featured = {};
     }
-    config.featured[subpage] = newPath;
+    config.featured[subpage] = dataUrl;
   } else if (section === 'subpages') {
     if (!config.subpages) {
       config.subpages = {};
@@ -113,11 +104,11 @@ app.post('/api/upload', authenticateAdmin, upload.single('file'), (req, res) => 
     if (!config.subpages[subpage]) {
       config.subpages[subpage] = [];
     }
-    config.subpages[subpage][parseInt(index)] = newPath;
+    config.subpages[subpage][parseInt(index)] = dataUrl;
   }
 
   fs.writeJsonSync(configPath, config);
-  res.json({ success: true, message: 'File uploaded!', path: newPath });
+  res.json({ success: true, message: 'File uploaded!', path: dataUrl });
 });
 
 // Product API endpoints
@@ -137,7 +128,9 @@ app.post('/api/products', authenticateAdmin, upload.single('productImage'), (req
     // Determine image path - either uploaded file or provided URL
     let imagePath = req.body.image;
     if (req.file) {
-      imagePath = `uploads/${req.file.filename}`;
+      // Convert file to base64 data URL for client-side storage
+      const fileData = req.file.buffer.toString('base64');
+      imagePath = `data:${req.file.mimetype};base64,${fileData}`;
     }
 
     const newProduct = {
@@ -170,7 +163,9 @@ app.put('/api/products/:id', authenticateAdmin, upload.single('productImage'), (
     // Determine image path - either uploaded file or provided URL
     let imagePath = req.body.image;
     if (req.file) {
-      imagePath = `uploads/${req.file.filename}`;
+      // Convert file to base64 data URL for client-side storage
+      const fileData = req.file.buffer.toString('base64');
+      imagePath = `data:${req.file.mimetype};base64,${fileData}`;
     }
 
     products[productIndex] = {
@@ -219,9 +214,13 @@ app.post('/api/hero', upload.single('heroVideo'), authenticateAdmin, (req, res) 
       config.hero = [];
     }
 
+    // Convert file to base64 data URL for client-side storage
+    const fileData = req.file.buffer.toString('base64');
+    const dataUrl = `data:${req.file.mimetype};base64,${fileData}`;
+
     // Add new hero slide data
     const newSlide = {
-      video: `uploads/${req.file.filename}`,
+      video: dataUrl,
       title: req.body.heroTitle,
       text: req.body.heroText,
       buttonText: req.body.heroButtonText
