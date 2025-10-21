@@ -124,13 +124,68 @@ function createProductElement(product) {
         product.price = 0;
     }
 
+    // Create WhatsApp message with product details
+    const productName = encodeURIComponent(product.name);
+    const productPrice = encodeURIComponent(`$${parseFloat(product.price).toFixed(2)}`);
+    const productDescription = encodeURIComponent(product.description);
+    const productImage = encodeURIComponent(product.image);
+
+    // WhatsApp message template with image URL
+    const whatsappMessage = encodeURIComponent(`Hi, I'm interested in this watch:\n\nProduct: ${product.name}\nPrice: $${parseFloat(product.price).toFixed(2)}\nDescription: ${product.description}\n\nImage: ${product.image}\n\nCould you please provide more details?`);
+
+    // WhatsApp link (replace with your actual WhatsApp number)
+    const whatsappLink = `https://wa.me/9061649654?text=${whatsappMessage}`;
+
     productDiv.innerHTML = `
         <img src="${product.image}" alt="${product.name}" onerror="console.error('Image failed to load:', '${product.image}'); this.onerror=null;this.src='https://placehold.co/300x200/1a1a1a/ffffff?text=${encodeURIComponent(product.name)}';">
         <h3>${product.name}</h3>
         <p>${product.description}</p>
         <p class="product-price">Price: $${parseFloat(product.price).toFixed(2)}</p>
-        <a href="#" class="btn">View Details</a>
+        <a href="${whatsappLink}" class="btn" target="_blank">Enquire Now</a>
     `;
 
     return productDiv;
+}
+
+// Initialize featured watches functionality
+document.addEventListener('DOMContentLoaded', function () {
+    initFeaturedWatches();
+});
+
+function initFeaturedWatches() {
+    const watchCards = document.querySelectorAll('.watch-card');
+
+    watchCards.forEach(card => {
+        const zoomBtn = card.querySelector('.zoom-btn');
+        const rotateBtn = card.querySelector('.rotate-btn');
+        const watchVisual = card.querySelector('.watch-visual');
+        const watchFace = card.querySelector('.watch-face');
+
+        if (zoomBtn) {
+            zoomBtn.addEventListener('click', function () {
+                watchVisual.classList.toggle('rotating');
+                setTimeout(() => {
+                    watchVisual.classList.remove('rotating');
+                }, 2000);
+            });
+        }
+
+        if (rotateBtn) {
+            rotateBtn.addEventListener('click', function () {
+                watchVisual.classList.add('rotating');
+                setTimeout(() => {
+                    watchVisual.classList.remove('rotating');
+                }, 2000);
+            });
+        }
+
+        // Add hover effect for zoom indicator
+        card.addEventListener('mouseenter', function () {
+            this.querySelector('.zoom-indicator').style.opacity = '1';
+        });
+
+        card.addEventListener('mouseleave', function () {
+            this.querySelector('.zoom-indicator').style.opacity = '0';
+        });
+    });
 }

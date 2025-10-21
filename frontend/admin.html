@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Replica Watches</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body class="admin-body">
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <h2>Admin Dashboard</h2>
+        </div>
+        <ul class="nav-links">
+          <li><a href="#" id="dashboard-link" class="active">Dashboard</a></li>
+          <li><a href="#" id="products-link">Products</a></li>
+          <li><a href="#" id="hero-link">Hero Section</a></li>
+          <li><a href="#" id="logout-link">Logout</a></li>
+        </ul>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+    </header>
+
+    <main class="admin-main">
+      <!-- Dashboard Overview -->
+      <section id="dashboard-section" class="admin-section active">
+        <div class="admin-container">
+          <h1 class="section-title">Dashboard Overview</h1>
+          <div class="dashboard-stats">
+            <div class="stat-card">
+              <i class="fas fa-box"></i>
+              <h3>Total Products</h3>
+              <p id="total-products">0</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-images"></i>
+              <h3>Hero Slides</h3>
+              <p id="total-hero-slides">0</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-shopping-cart"></i>
+              <h3>Categories</h3>
+              <p>3</p>
+            </div>
+          </div>
+
+          <div class="admin-actions">
+            <button id="add-product-btn" class="btn">
+              <i class="fas fa-plus"></i> Add New Product
+            </button>
+            <button id="add-hero-slide-btn" class="btn">
+              <i class="fas fa-plus"></i> Add Hero Slide
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Products Management -->
+      <section id="products-section" class="admin-section">
+        <div class="admin-container">
+          <h1 class="section-title">Product Management</h1>
+          <div class="admin-actions">
+            <button id="add-new-product-btn" class="btn">
+              <i class="fas fa-plus"></i> Add New Product
+            </button>
+          </div>
+
+          <div id="products-list" class="products-grid">
+            <!-- Products will be loaded here -->
+            <p class="loading">Loading products...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hero Section Management -->
+      <section id="hero-section" class="admin-section">
+        <div class="admin-container">
+          <h1 class="section-title">Hero Section Management</h1>
+          <div class="admin-actions">
+            <button id="add-new-hero-btn" class="btn">
+              <i class="fas fa-plus"></i> Add New Hero Slide
+            </button>
+          </div>
+
+          <div id="hero-slides-list" class="hero-slides-grid">
+            <!-- Hero slides will be loaded here -->
+            <p class="loading">Loading hero slides...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Add/Edit Product Modal -->
+      <div id="product-modal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 id="product-modal-title">Add New Product</h2>
+          <form id="product-form" enctype="multipart/form-data">
+            <input type="hidden" id="product-id" />
+            <div class="form-group">
+              <label for="product-name">Product Name</label>
+              <input
+                type="text"
+                id="product-name"
+                required
+                placeholder="Enter product name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="product-description">Description</label>
+              <textarea
+                id="product-description"
+                required
+                placeholder="Enter product description"
+              ></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="product-price">Price ($)</label>
+                <input
+                  type="number"
+                  id="product-price"
+                  min="0"
+                  step="0.01"
+                  required
+                  placeholder="Enter price"
+                />
+              </div>
+              <div class="form-group">
+                <label for="product-category">Category</label>
+                <select id="product-category" required>
+                  <option value="">Select a category</option>
+                  <option value="rolex">Rolex</option>
+                  <option value="patek-philippe">Patek Philippe</option>
+                  <option value="richard-mille">Richard Mille</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="product-image">Image Upload</label>
+              <input type="file" id="product-image" accept="image/*" />
+              <p class="form-help">Upload an image or enter URL below</p>
+            </div>
+            <div class="form-group">
+              <label for="product-image-url">Image URL (optional)</label>
+              <input
+                type="url"
+                id="product-image-url"
+                placeholder="Or enter image URL"
+              />
+            </div>
+            <button type="submit" class="btn">Save Product</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Add/Edit Hero Slide Modal -->
+      <div id="hero-modal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 id="hero-modal-title">Add New Hero Slide</h2>
+          <form id="hero-form">
+            <input type="hidden" id="hero-index" />
+            <div class="form-group">
+              <label for="hero-title">Title</label>
+              <input
+                type="text"
+                id="hero-title"
+                required
+                placeholder="Enter slide title"
+              />
+            </div>
+            <div class="form-group">
+              <label for="hero-text">Description</label>
+              <textarea
+                id="hero-text"
+                required
+                placeholder="Enter slide description"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="hero-button-text">Button Text</label>
+              <input
+                type="text"
+                id="hero-button-text"
+                required
+                placeholder="Enter button text"
+              />
+            </div>
+            <div class="form-group">
+              <label for="hero-video">Video File (MP4 only)</label>
+              <input type="file" id="hero-video" accept="video/mp4" />
+            </div>
+            <button type="submit" class="btn">Save Hero Slide</button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

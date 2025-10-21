@@ -415,6 +415,9 @@ async function saveHeroSlide() {
 
             const response = await fetch('/api/upload', {
                 method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer admin123'
+                },
                 body: formData
             });
 
