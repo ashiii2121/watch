@@ -238,7 +238,28 @@ setInterval(() => {
 
 // Mobile menu
 document.querySelector('.hamburger').addEventListener('click', () => {
+  document.querySelector('.hamburger').classList.toggle('active');
   document.querySelector('.nav-links').classList.toggle('active');
+});
+
+// Close mobile menu when clicking on a link
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.hamburger').classList.remove('active');
+    document.querySelector('.nav-links').classList.remove('active');
+  });
+});
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (event) => {
+  const navbar = document.querySelector('.navbar');
+  const navLinks = document.querySelector('.nav-links');
+  const hamburger = document.querySelector('.hamburger');
+
+  if (!navbar.contains(event.target) && navLinks.classList.contains('active')) {
+    hamburger.classList.remove('active');
+    navLinks.classList.remove('active');
+  }
 });
 
 // Fade-in on scroll
