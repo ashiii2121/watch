@@ -236,31 +236,84 @@ setInterval(() => {
   showFSlide(currentFSlide);
 }, 4000);
 
-// Mobile menu
-document.querySelector('.hamburger').addEventListener('click', () => {
-  document.querySelector('.hamburger').classList.toggle('active');
-  document.querySelector('.nav-links').classList.toggle('active');
-});
+// Frontend JavaScript for mobile menu and other functionality
+console.log('Script.js loaded');
 
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', () => {
-    document.querySelector('.hamburger').classList.remove('active');
-    document.querySelector('.nav-links').classList.remove('active');
-  });
-});
+// Mobile menu functionality - Minimal and straightforward approach
+let mobileMenuInitialized = false;
 
-// Close mobile menu when clicking outside
-document.addEventListener('click', (event) => {
-  const navbar = document.querySelector('.navbar');
-  const navLinks = document.querySelector('.nav-links');
-  const hamburger = document.querySelector('.hamburger');
-
-  if (!navbar.contains(event.target) && navLinks.classList.contains('active')) {
-    hamburger.classList.remove('active');
-    navLinks.classList.remove('active');
+function initMobileMenu() {
+  // Prevent multiple initializations
+  if (mobileMenuInitialized) {
+    console.log('Mobile menu already initialized');
+    return;
   }
+
+  console.log('Initializing mobile menu...');
+
+  // Get the hamburger and nav-links elements
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks = document.querySelector('.nav-links');
+
+  console.log('Hamburger element:', hamburger);
+  console.log('Nav-links element:', navLinks);
+
+  if (!hamburger || !navLinks) {
+    console.log('Hamburger or nav-links not found');
+    return;
+  }
+
+  // Ensure hamburger has cursor pointer style
+  hamburger.style.cursor = 'pointer';
+
+  // Function to toggle menu
+  function toggleMenu(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    console.log('Toggling menu');
+
+    // Toggle active classes
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+
+    console.log('Hamburger active:', hamburger.classList.contains('active'));
+    console.log('Nav links active:', navLinks.classList.contains('active'));
+  }
+
+  // Add click event to hamburger
+  hamburger.addEventListener('click', toggleMenu);
+
+  // Expose toggleMenu function globally for testing
+  window.toggleMobileMenuTest = toggleMenu;
+
+  mobileMenuInitialized = true;
+  console.log('Mobile menu initialized successfully');
+}
+
+// Initialize mobile menu
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('DOM content loaded - initializing mobile menu');
+  initMobileMenu();
 });
+
+// Expose a test function to manually trigger the menu toggle
+window.testHamburger = function () {
+  console.log('Manual hamburger test triggered');
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks = document.querySelector('.nav-links');
+
+  if (hamburger && navLinks) {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+    console.log('Manual toggle - Hamburger active:', hamburger.classList.contains('active'));
+    console.log('Manual toggle - Nav links active:', navLinks.classList.contains('active'));
+  } else {
+    console.log('Hamburger or nav-links not found for manual test');
+  }
+};
 
 // Fade-in on scroll
 const observer = new IntersectionObserver((entries) => {
@@ -277,4 +330,82 @@ document.querySelectorAll('.product-card, .category-item, .product-item').forEac
   el.style.transform = 'translateY(20px)';
   el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(el);
+});
+
+// Wishlist functionality
+document.addEventListener('DOMContentLoaded', function () {
+  // Initialize wishlist
+  let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+  // Update wishlist count display
+  function updateWishlistCount() {
+    const countElement = document.querySelector('.wishlist-count');
+    if (countElement) {
+      countElement.textContent = wishlist.length;
+    }
+  }
+
+  // Add item to wishlist
+  function addToWishlist(product) {
+    // Check if product is already in wishlist
+    const exists = wishlist.some(item => item.id === product.id);
+    if (!exists) {
+      wishlist.push(product);
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      updateWishlistCount();
+
+      // Visual feedback
+      const wishlistIcon = document.querySelector('.wishlist-icon');
+      if (wishlistIcon) {
+        wishlistIcon.classList.add('added');
+        setTimeout(() => {
+          wishlistIcon.classList.remove('added');
+        }, 1000);
+      }
+    }
+  }
+
+  // Remove item from wishlist
+  function removeFromWishlist(productId) {
+    wishlist = wishlist.filter(item => item.id !== productId);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    updateWishlistCount();
+  }
+
+  // Initialize wishlist count
+  updateWishlistCount();
+
+  // Add event listeners for wishlist toggle
+  const wishlistToggle = document.getElementById('wishlist-toggle');
+  if (wishlistToggle) {
+    wishlistToggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      // Here you would typically open a wishlist modal or page
+      alert(`You have ${wishlist.length} items in your wishlist`);
+    });
+  }
+
+  // Add event listeners to product "Add to Wishlist" buttons
+  // This would be implemented on product pages
+  document.querySelectorAll('.add-to-wishlist').forEach(button => {
+    button.addEventListener('click', function () {
+      const product = {
+        id: this.dataset.productId,
+        name: this.dataset.productName,
+        price: this.dataset.productPrice,
+        image: this.dataset.productImage
+      };
+      addToWishlist(product);
+    });
+  });
+});
+
+// Enhanced navbar scroll effect
+window.addEventListener('scroll', function () {
+  const navbar = document.querySelector('.navbar');
+  if (window.scrollY > 50) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
 });

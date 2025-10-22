@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize hero carousel
     initHeroCarousel();
+
+    // Initialize featured watches
+    initFeaturedWatches();
 });
 
 // Initialize hero carousel functionality
@@ -147,11 +150,6 @@ function createProductElement(product) {
     return productDiv;
 }
 
-// Initialize featured watches functionality
-document.addEventListener('DOMContentLoaded', function () {
-    initFeaturedWatches();
-});
-
 function initFeaturedWatches() {
     const watchCards = document.querySelectorAll('.watch-card');
 
@@ -189,3 +187,81 @@ function initFeaturedWatches() {
         });
     });
 }
+
+// Wishlist functionality
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize wishlist
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+    // Update wishlist count display
+    function updateWishlistCount() {
+        const countElement = document.querySelector('.wishlist-count');
+        if (countElement) {
+            countElement.textContent = wishlist.length;
+        }
+    }
+
+    // Add item to wishlist
+    function addToWishlist(product) {
+        // Check if product is already in wishlist
+        const exists = wishlist.some(item => item.id === product.id);
+        if (!exists) {
+            wishlist.push(product);
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            updateWishlistCount();
+
+            // Visual feedback
+            const wishlistIcon = document.querySelector('.wishlist-icon');
+            if (wishlistIcon) {
+                wishlistIcon.classList.add('added');
+                setTimeout(() => {
+                    wishlistIcon.classList.remove('added');
+                }, 1000);
+            }
+        }
+    }
+
+    // Remove item from wishlist
+    function removeFromWishlist(productId) {
+        wishlist = wishlist.filter(item => item.id !== productId);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        updateWishlistCount();
+    }
+
+    // Initialize wishlist count
+    updateWishlistCount();
+
+    // Add event listeners for wishlist toggle
+    const wishlistToggle = document.getElementById('wishlist-toggle');
+    if (wishlistToggle) {
+        wishlistToggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            // Here you would typically open a wishlist modal or page
+            alert(`You have ${wishlist.length} items in your wishlist`);
+        });
+    }
+
+    // Add event listeners to product "Add to Wishlist" buttons
+    // This would be implemented on product pages
+    document.querySelectorAll('.add-to-wishlist').forEach(button => {
+        button.addEventListener('click', function () {
+            const product = {
+                id: this.dataset.productId,
+                name: this.dataset.productName,
+                price: this.dataset.productPrice,
+                image: this.dataset.productImage
+            };
+            addToWishlist(product);
+        });
+    });
+});
+
+// Enhanced navbar scroll effect
+window.addEventListener('scroll', function () {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});

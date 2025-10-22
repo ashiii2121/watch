@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Hamburger Menu</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
+
+      .test-container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .instructions {
+        background: #f0f0f0;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px 5px;
+      }
+
+      button:hover {
+        background: #0056b3;
+      }
+
+      .console {
+        background: #000;
+        color: #0f0;
+        padding: 15px;
+        border-radius: 5px;
+        height: 200px;
+        overflow-y: auto;
+        font-family: monospace;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <div class="instructions">
+        <h2>Hamburger Menu Test</h2>
+        <p>
+          Resize your browser to mobile view (less than 768px wide) to see the
+          hamburger menu.
+        </p>
+        <p>
+          Then try clicking the hamburger button or use the test buttons below.
+        </p>
+      </div>
+
+      <nav class="navbar">
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="logo">
+          <h2>Test Menu</h2>
+        </div>
+        <ul class="nav-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="nav-icons">
+          <a href="#" class="wishlist-icon">
+            <i class="fas fa-heart"></i>
+          </a>
+        </div>
+      </nav>
+
+      <div style="margin-top: 100px">
+        <button onclick="testHamburger()">Test Hamburger Toggle</button>
+        <button onclick="console.clear()">Clear Console</button>
+      </div>
+
+      <div class="console" id="console">Console output will appear here...</div>
+    </div>
+
+    <script src="../backend/script.js"></script>
+    <script>
+      // Override console.log to display in our test console
+      const originalLog = console.log;
+      const consoleElement = document.getElementById("console");
+
+      console.log = function (message) {
+        originalLog.apply(console, arguments);
+
+        if (consoleElement) {
+          const timestamp = new Date().toLocaleTimeString();
+          consoleElement.innerHTML += `[${timestamp}] ${message}\n`;
+          consoleElement.scrollTop = consoleElement.scrollHeight;
+        }
+      };
+
+      // Also override console.error
+      const originalError = console.error;
+      console.error = function (message) {
+        originalError.apply(console, arguments);
+
+        if (consoleElement) {
+          const timestamp = new Date().toLocaleTimeString();
+          consoleElement.innerHTML += `[${timestamp}] ERROR: ${message}\n`;
+          consoleElement.scrollTop = consoleElement.scrollHeight;
+        }
+      };
+    </script>
+  </body>
+</html>

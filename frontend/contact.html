@@ -17,6 +17,11 @@
   <body>
     <header>
       <nav class="navbar">
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
         <div class="logo">
           <h2><a href="index.html">Replica Watches</a></h2>
         </div>
@@ -26,10 +31,15 @@
           <li><a href="index.html#categories">Categories</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
-        <div class="hamburger">
-          <span></span>
-          <span></span>
-          <span></span>
+        <div class="nav-icons">
+          <a
+            href="index.html#wishlist"
+            class="wishlist-icon"
+            id="wishlist-toggle"
+          >
+            <i class="fas fa-heart"></i>
+            <span class="wishlist-count">0</span>
+          </a>
         </div>
       </nav>
     </header>
@@ -219,7 +229,8 @@
       <i class="fab fa-whatsapp"></i>
     </a>
 
-    <script src="script.js"></script>
+    <script src="../backend/script.js"></script>
+    <script src="frontend.js"></script>
     <script>
       document
         .getElementById("contactForm")

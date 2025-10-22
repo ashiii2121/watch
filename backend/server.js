@@ -12,6 +12,8 @@ const PORT = 3000;
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 // Serve img directory
 app.use('/img', express.static(path.join(__dirname, '..', 'img')));
+// Serve uploads directory for videos
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -205,7 +207,8 @@ app.get('/api/hero', (req, res) => {
   }
 });
 
-app.post('/api/hero', upload.single('heroVideo'), authenticateAdmin, (req, res) => {
+// Fixed the multer configuration for hero section
+app.post('/api/hero', authenticateAdmin, upload.single('heroVideo'), (req, res) => {
   try {
     const config = fs.readJsonSync(configPath);
 
@@ -214,16 +217,20 @@ app.post('/api/hero', upload.single('heroVideo'), authenticateAdmin, (req, res) 
       config.hero = [];
     }
 
-    // Convert file to base64 data URL for client-side storage
-    const fileData = req.file.buffer.toString('base64');
-    const dataUrl = `data:${req.file.mimetype};base64,${fileData}`;
+    let videoUrl = '';
+    // Handle file upload if present
+    if (req.file) {
+      // Convert file to base64 data URL for client-side storage
+      const fileData = req.file.buffer.toString('base64');
+      videoUrl = `data:${req.file.mimetype};base64,${fileData}`;
+    }
 
     // Add new hero slide data
     const newSlide = {
-      video: dataUrl,
-      title: req.body.heroTitle,
-      text: req.body.heroText,
-      buttonText: req.body.heroButtonText
+      video: videoUrl || 'uploads/hero1.mp4', // Default video if none provided
+      title: req.body.heroTitle || 'Default Title',
+      text: req.body.heroText || 'Default Description',
+      buttonText: req.body.heroButtonText || 'Shop Now'
     };
 
     config.hero.push(newSlide);
